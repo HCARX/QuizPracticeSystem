@@ -1,0 +1,13 @@
+<IfModule mod_rewrite.c>
+    RewriteEngine on
+
+    # 1. 如果请求的不是 public 文件夹下的路径，则自动加上 /public/
+    RewriteCond %{REQUEST_URI} !^/public/
+    RewriteRule ^(.*)$ public/$1 [L]
+
+    # 2. 处理 public 内部的伪静态（针对 ThinkPHP/Laravel）
+    # 如果文件或目录不存在，则跳转到 public/index.php
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteRule ^public/(.*)$ public/index.php?/$1 [QSA,PT,L]
+</IfModule>
